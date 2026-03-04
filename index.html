@@ -281,6 +281,11 @@
     gap: 0.5rem;
   }
 
+  .service-card-disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
   .countdown {
     color: var(--accent);
     font-weight: 700;
@@ -290,10 +295,10 @@
 <body>
 
 <header>
-  <div>
-    <div class="logo">Kyber<span>BOX</span> · Service Monitor</div>
-    <div class="last-checked" id="last-checked">Checking...</div>
-  </div>
+    <div>
+      <div class="logo"><img src="https://kyberbox.app/KY.svg" class="logo-img" alt="KyberBOX"> · Service Monitor</div>
+      <div class="last-checked" id="last-checked">Checking...</div>
+    </div>
   <div style="display:flex;align-items:center;gap:0.5rem">
     <button class="refresh-btn" id="refresh-btn" onclick="fetchStatus()">↻ Refresh</button>
   </div>
@@ -344,6 +349,8 @@ function latencyClass(ms) {
 function renderCard(key, data) {
   const svc = SERVICES[key];
   const status = data ? data.status : "loading";
+  const isUnconfigured = data && data.status === "unknown" && data.error && data.error.includes("configured");
+
   const statusColors = {
     online: "var(--online)",
     offline: "var(--offline)",
@@ -354,7 +361,7 @@ function renderCard(key, data) {
 
   const metrics = [];
 
-  if (data) {
+  if (data && !isUnconfigured) {
     if (data.latency_ms != null) {
       metrics.push({
         label: "Latency",
@@ -381,12 +388,18 @@ function renderCard(key, data) {
         </div>`).join("")}</div>`
     : "";
 
-  const errorHtml = data && data.error
+  const errorHtml = data && data.error && !isUnconfigured
     ? `<div class="error-msg">⚠ ${data.error}</div>`
     : "";
 
+  const unconfiguredHtml = isUnconfigured
+    ? `<div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--muted);margin-top:0.8rem;">No credentials configured — set env vars to enable</div>`
+    : "";
+
+  const cardClass = isUnconfigured ? "card service-card-disabled" : "card";
+
   return `
-    <div class="card" id="card-${key}" style="--status-color: ${statusColors[status] || statusColors.loading}">
+    <div class="${cardClass}" id="card-${key}" style="--status-color: ${statusColors[status] || statusColors.loading}">
       <div class="card-header">
         <div class="service-info">
           <div class="service-icon">${svc.icon}</div>
@@ -395,13 +408,14 @@ function renderCard(key, data) {
             <div class="service-type">${svc.type}</div>
           </div>
         </div>
-        <div class="status-badge ${status}">
-          <div class="status-dot ${status}"></div>
-          ${status}
+        <div class="status-badge ${isUnconfigured ? 'unknown' : status}">
+          <div class="status-dot ${isUnconfigured ? '' : status}"></div>
+          ${isUnconfigured ? 'n/a' : status}
         </div>
       </div>
       ${metricsHtml}
       ${errorHtml}
+      ${unconfiguredHtml}
     </div>`;
 }
 
