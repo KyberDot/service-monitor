@@ -44,11 +44,21 @@
   }
 
   .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
     font-size: 1.1rem;
     font-weight: 800;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--accent);
+  }
+
+  .logo img {
+    height: 28px;
+    width: auto;
+    display: block;
+    flex-shrink: 0;
   }
 
   .logo span {
@@ -296,7 +306,7 @@
 
 <header>
     <div>
-      <div class="logo"><img src="https://kyberbox.app/KY.svg" class="logo-img" alt="KyberBOX"> · Service Monitor</div>
+      <div class="logo"><img src="https://kyberbox.app/KY.svg" alt="KyberBOX"> · Service Monitor</div>
       <div class="last-checked" id="last-checked">Checking...</div>
     </div>
   <div style="display:flex;align-items:center;gap:0.5rem">
