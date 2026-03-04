@@ -56,7 +56,7 @@
   }
 
   .logo img {
-    height: 28px;
+    height: 70px;
     width: auto;
     display: block;
     flex-shrink: 0;
@@ -379,6 +379,12 @@ function renderCard(key, data) {
         value: `${data.latency_ms}ms`,
         cls: latencyClass(data.latency_ms),
       });
+    }
+    if (data.connections) {
+      metrics.push({ label: "Connections", value: data.connections });
+    }
+    if (data.allowance_left) {
+      metrics.push({ label: "Allowance Left", value: data.allowance_left });
     }
     if (data.username) {
       metrics.push({ label: "Account", value: data.username });
