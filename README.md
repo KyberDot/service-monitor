@@ -1,15 +1,17 @@
 # KyberBOX · Service Monitor
 
-A lightweight Docker app that checks the live status of Real-Debrid, Easynews, Newshosting, and Tweaknews — showing latency, account info, expiry dates, and allowance remaining.
+A lightweight Docker app that checks the live status of Real-Debrid, Easynews, Newshosting, and Tweaknews.
 
-## How it works
+## What it shows
 
-- **Real-Debrid** — HTTP API · shows username, premium expiry
-- **Easynews** — HTTP API · shows username, expiry, allowance left
-- **Newshosting** — TCP :563 + HTTP API · shows username, expiry, connections, allowance left
-- **Tweaknews** — TCP :563 + HTTP API · shows username, expiry, connections, allowance left
+| Service | Check | Info Shown |
+|---|---|---|
+| Real-Debrid | HTTP API | Username, premium expiry |
+| Easynews | HTTP (solr-search) | Username, connectivity |
+| Newshosting | TCP :563 | Username, latency |
+| Tweaknews | TCP :563 | Username, latency |
 
-Results are cached for 60 seconds. Page auto-refreshes every 60 seconds.
+Results cached 60s, page auto-refreshes every 60s.
 
 ## Docker Compose
 
@@ -44,6 +46,6 @@ TWEAKNEWS_USER=your_tweaknews_username
 TWEAKNEWS_PASS=your_tweaknews_password
 ```
 
-All credentials are optional — services without credentials configured will show as N/A while others continue to display their live status.
+All credentials are optional — unconfigured services show as N/A while others display live status.
 
 Get your Real-Debrid API key at: https://real-debrid.com/apitoken
