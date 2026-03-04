@@ -26,8 +26,8 @@
     background: var(--bg);
     color: var(--text);
     font-family: 'Syne', sans-serif;
-    min-height: 100vh; display: flex; flex-direction: column;
-    padding: 2rem;
+    min-height: 100vh;
+    padding: 1rem;
     background-image:
       radial-gradient(ellipse 80% 50% at 50% -20%, rgba(88,166,255,0.08) 0%, transparent 60%),
       repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(30,39,51,0.4) 40px),
@@ -36,7 +36,7 @@
 
   header {
     max-width: 900px;
-    margin: 0 auto 1rem;
+    margin: 0 auto 1.5rem;
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
@@ -47,7 +47,7 @@
   .logo {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.2rem;
     font-size: 1.1rem;
     font-weight: 800;
     letter-spacing: 0.15em;
@@ -56,11 +56,11 @@
   }
 
   .logo img {
-    height: 35px;
+    height: 42px;
     width: auto;
     display: block;
     flex-shrink: 0;
-    margin-right: 1.4rem;
+    margin-right: -1.15rem;
   }
 
   .logo span {
@@ -246,7 +246,6 @@
     font-size: 0.85rem;
     color: var(--text);
     font-weight: 700;
-    word-break: break-all;
   }
 
   .metric-value.latency-good { color: var(--online); }
@@ -278,7 +277,7 @@
 
   footer {
     max-width: 900px;
-    margin: auto auto 0;
+    margin: 3rem auto 0;
     border-top: 1px solid var(--border);
     padding-top: 1rem;
     font-family: 'Space Mono', monospace;
