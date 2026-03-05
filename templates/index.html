@@ -360,11 +360,27 @@ function latencyClass(ms) {
   return "latency-bad";
 }
 
-// ── Storage ─────────────────────────────────────────────────────────────────
-function getExpiry(key)      { return localStorage.getItem(`expiry_${key}`) || ""; }
-function getPlan(key)        { return localStorage.getItem(`plan_${key}`) || "date"; }
-function setExpiry(key, val) { localStorage.setItem(`expiry_${key}`, val); }
-function setPlan(key, val)   { localStorage.setItem(`plan_${key}`, val); }
+// ── Storage (server-side JSON) ───────────────────────────────────────────────
+let _expiryStore = {};
+
+async function loadExpiryStore() {
+  try {
+    const res = await fetch("/api/expiry");
+    _expiryStore = await res.json();
+  } catch(e) { _expiryStore = {}; }
+}
+
+function getExpiry(key)      { return _expiryStore[`expiry_${key}`] || ""; }
+function getPlan(key)        { return _expiryStore[`plan_${key}`] || "date"; }
+
+function setExpiry(key, val) {
+  _expiryStore[`expiry_${key}`] = val;
+  fetch("/api/expiry", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({key, expiry: val}) });
+}
+function setPlan(key, val) {
+  _expiryStore[`plan_${key}`] = val;
+  fetch("/api/expiry", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({key, plan: val}) });
+}
 
 function expiryStatus(key) {
   if (getPlan(key) === "lifetime") return "lifetime";
@@ -556,6 +572,7 @@ function renderSkeleton(services) {
 }
 
 async function fetchStatus() {
+  await loadExpiryStore();
   const btn = document.getElementById("refresh-btn");
   btn.classList.add("spinning");
   document.getElementById("cards-services").innerHTML = renderSkeleton(SERVICES);
@@ -587,11 +604,11 @@ function resetCountdown() {
     countdownVal--;
     const el = document.getElementById("countdown");
     if (el) el.textContent = countdownVal;
-    if (countdownVal <= 0) fetchStatus();
+    if (countdownVal <= 0) loadExpiryStore().then(fetchStatus);
   }, 1000);
 }
 
-fetchStatus();
+loadExpiryStore().then(fetchStatus);
 </script>
 </body>
 </html>
