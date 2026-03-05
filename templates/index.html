@@ -519,12 +519,11 @@ function renderServiceCard(key, data) {
           <div class="service-icon">${svc.icon}</div>
           <div>
             <div class="service-name">${svc.name}</div>
-            <div class="service-type">${svc.type}</div>
+            <div class="service-type">${svc.type}${(svc.extras||[]).map(e=>' · <span style="color:var(--accent)">' + e + '</span>').join('')}</div>
           </div>
         </div>
         <div class="card-header-right">
           <div class="card-header-top">
-            ${(svc.extras || []).map(e => `<div class="extra-badge">${e}</div>`).join('')}
             <div class="status-badge ${isUnconfigured ? 'unknown' : status}">
               <div class="status-dot ${isUnconfigured ? '' : status}"></div>
               ${isUnconfigured ? 'n/a' : status}
@@ -547,7 +546,7 @@ function renderIndexerCard(key) {
           <div class="service-icon">${svc.icon}</div>
           <div>
             <div class="service-name">${svc.name}</div>
-            <div class="service-type">${svc.type}</div>
+            <div class="service-type">${svc.type}${(svc.extras||[]).map(e=>' · <span style="color:var(--accent)">' + e + '</span>').join('')}</div>
           </div>
         </div>
         <div class="card-header-right">
