@@ -104,8 +104,8 @@ def check_newshosting():
 
 
 def check_tweaknews():
-    result = check_tcp("news.tweaknews.eu", 563)
-    result["host"] = "news.tweaknews.eu:563"
+    result = check_tcp("newshosting.tweaknews.eu", 563)
+    result["host"] = "newshosting.tweaknews.eu:563"
     if TWEAKNEWS_USER:
         result["username"] = TWEAKNEWS_USER
     return result
