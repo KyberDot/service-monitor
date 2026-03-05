@@ -63,10 +63,7 @@
     margin-right: -1.15rem;
   }
 
-  .logo span {
-    color: var(--muted);
-    font-weight: 400;
-  }
+  .logo span { color: var(--muted); font-weight: 400; }
 
   .last-checked {
     font-family: 'Space Mono', monospace;
@@ -88,24 +85,31 @@
     transition: all 0.2s;
     margin-left: 1rem;
   }
+  .refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .refresh-btn.spinning { animation: spin 1s linear infinite; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-  .refresh-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
+  /* Section headers */
+  .section-wrap { max-width: 900px; margin: 0 auto 2rem; }
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
   }
 
-  .refresh-btn.spinning {
-    animation: spin 1s linear infinite;
-  }
-
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  main {
-    max-width: 900px;
-    margin: 0 auto;
+  .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
     gap: 1rem;
@@ -116,7 +120,7 @@
     border: 1px solid var(--border);
     padding: 0.95rem;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     transition: border-color 0.3s, transform 0.2s;
     animation: fadeIn 0.4s ease forwards;
     opacity: 0;
@@ -141,10 +145,7 @@
     transition: background 0.3s;
   }
 
-  .card:hover {
-    border-color: rgba(88,166,255,0.2);
-    transform: translateY(-2px);
-  }
+  .card:hover { border-color: rgba(88,166,255,0.2); transform: translateY(-2px); }
 
   .card-header {
     display: flex;
@@ -153,71 +154,124 @@
     margin-bottom: 1.2rem;
   }
 
-  .service-info {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-  }
+  .service-info { display: flex; align-items: center; gap: 0.8rem; }
 
   .service-icon {
-    width: 36px;
-    height: 36px;
+    width: 36px; height: 36px;
     border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     font-size: 1rem;
     background: var(--border);
     flex-shrink: 0;
   }
 
-  .service-name {
-    font-size: 1rem;
-    font-weight: 800;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
+  .service-name { font-size: 1rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
+  .service-type { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); margin-top: 0.1rem; }
 
-  .service-type {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    margin-top: 0.1rem;
-  }
+  .card-header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; }
 
   .status-badge {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
+    display: flex; align-items: center; gap: 0.4rem;
     padding: 0.3rem 0.7rem;
     border-radius: 2px;
     font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
     border: 1px solid currentColor;
   }
-
   .status-badge.online { color: var(--online); }
   .status-badge.offline { color: var(--offline); }
   .status-badge.degraded { color: var(--degraded); }
   .status-badge.unknown { color: var(--unknown); }
   .status-badge.loading { color: var(--muted); }
 
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-  }
-
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
   .status-dot.online { animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
+  /* Expiry badge */
+  .expiry-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+    border: 1px solid currentColor;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    position: relative;
+    white-space: nowrap;
   }
+  .expiry-badge.active   { color: var(--online); }
+  .expiry-badge.inactive { color: var(--offline); }
+  .expiry-badge.lifetime { color: var(--accent); }
+  .expiry-badge.unset    { color: var(--muted); border-style: dashed; }
+  .expiry-badge:hover { opacity: 0.75; }
+
+  /* Expiry popup */
+  .expiry-popup {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    background: #111820;
+    border: 1px solid var(--border);
+    padding: 0.75rem;
+    z-index: 200;
+    min-width: 210px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text);
+  }
+  .expiry-popup.open { display: block; }
+  .expiry-popup label { color: var(--muted); display: block; margin-bottom: 0.3rem; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; }
+
+  .plan-toggle {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.6rem;
+  }
+  .plan-btn {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.3rem 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .plan-btn.active-plan { border-color: var(--accent); color: var(--accent); }
+
+  .date-row { display: none; margin-bottom: 0.5rem; }
+  .date-row.visible { display: block; }
+  .date-row input[type="date"] {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.3rem 0.4rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    width: 100%;
+  }
+  .date-row input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.5); }
+
+  .expiry-save-btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 0.3rem 0.6rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem; font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .expiry-save-btn:hover { opacity: 0.85; }
 
   .metrics {
     display: grid;
@@ -227,52 +281,18 @@
     border-top: 1px solid var(--border);
   }
 
-  .metric {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-  }
-
-  .metric-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .metric-value {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--text);
-    font-weight: 700;
-  }
-
+  .metric { display: flex; flex-direction: column; gap: 0.2rem; }
+  .metric-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .metric-value { font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--text); font-weight: 700; word-break: break-all; }
   .metric-value.latency-good { color: var(--online); }
-  .metric-value.latency-ok { color: var(--degraded); }
-  .metric-value.latency-bad { color: var(--offline); }
+  .metric-value.latency-ok   { color: var(--degraded); }
+  .metric-value.latency-bad  { color: var(--offline); }
 
   .error-msg {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--offline);
-    margin-top: 0.8rem;
-    padding: 0.5rem;
-    background: rgba(248,81,73,0.05);
-    border: 1px solid rgba(248,81,73,0.15);
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    color: var(--offline); margin-top: 0.8rem; padding: 0.5rem;
+    background: rgba(248,81,73,0.05); border: 1px solid rgba(248,81,73,0.15);
     word-break: break-all;
-  }
-
-  .skeleton {
-    background: linear-gradient(90deg, var(--border) 25%, rgba(30,39,51,0.8) 50%, var(--border) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 2px;
-  }
-
-  @keyframes shimmer {
-    from { background-position: 200% 0; }
-    to { background-position: -200% 0; }
   }
 
   footer {
@@ -281,121 +301,181 @@
     border-top: 1px solid var(--border);
     padding-top: 1rem;
     font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    display: flex;
-    justify-content: space-between;
+    font-size: 0.65rem; color: var(--muted);
+    display: flex; justify-content: space-between;
   }
-
-  .auto-refresh {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .service-card-disabled {
-    opacity: 0.4;
-    pointer-events: none;
-  }
-
-  .countdown {
-    color: var(--accent);
-    font-weight: 700;
-  }
+  .auto-refresh { display: flex; align-items: center; gap: 0.5rem; }
+  .countdown { color: var(--accent); font-weight: 700; }
+  .service-card-disabled { opacity: 0.4; pointer-events: none; }
 </style>
 </head>
 <body>
 
 <header>
-    <div>
-      <div class="logo"><img src="https://kyberbox.app/KY.svg" alt="KyberBOX"> · Service Monitor</div>
-      <div class="last-checked" id="last-checked">Checking...</div>
-    </div>
+  <div>
+    <div class="logo"><img src="https://kyberbox.app/KY.svg" alt="KyberBOX"> · Service Monitor</div>
+    <div class="last-checked" id="last-checked">Checking...</div>
+  </div>
   <div style="display:flex;align-items:center;gap:0.5rem">
     <button class="refresh-btn" id="refresh-btn" onclick="fetchStatus()">↻ Refresh</button>
   </div>
 </header>
 
-<main id="cards">
-  <!-- Cards injected by JS -->
-</main>
+<div class="section-wrap">
+  <div class="section-label">Infrastructure</div>
+  <div class="cards-grid" id="cards-services"></div>
+</div>
+
+<div class="section-wrap">
+  <div class="section-label">Indexers</div>
+  <div class="cards-grid" id="cards-indexers"></div>
+</div>
 
 <footer>
   <span>Created by <strong style="color:var(--accent)">KyberBOX</strong> · Checks cached for 60s · TCP + HTTP probes</span>
-  <div class="auto-refresh">
-    Auto-refresh in <span class="countdown" id="countdown">60</span>s
-  </div>
+  <div class="auto-refresh">Auto-refresh in <span class="countdown" id="countdown">60</span>s</div>
 </footer>
 
 <script>
 const SERVICES = {
-  real_debrid: {
-    name: "Real-Debrid",
-    type: "Debrid Service · HTTP API",
-    icon: "⚡",
-  },
-  easynews: {
-    name: "Easynews",
-    type: "Usenet · HTTP API",
-    icon: "📰",
-  },
-  newshosting: {
-    name: "Newshosting",
-    type: "Usenet · NNTP :563",
-    icon: "🗞",
-  },
-  tweaknews: {
-    name: "Tweaknews",
-    type: "Usenet · NNTP :563",
-    icon: "📡",
-  },
+  real_debrid: { name: "Real-Debrid", type: "Debrid Service · HTTP API", icon: "⚡" },
+  easynews:    { name: "Easynews",    type: "Usenet · HTTP API",          icon: "📰" },
+  newshosting: { name: "Newshosting", type: "Usenet · NNTP :563",         icon: "🗞"  },
+  tweaknews:   { name: "Tweaknews",   type: "Usenet · NNTP :563",         icon: "📡" },
 };
 
+const INDEXERS = {
+  althub:       { name: "AltHub",        type: "Usenet Indexer · NZB", icon: "🔍" },
+  nzbgeek:      { name: "NZBGeek",       type: "Usenet Indexer · NZB", icon: "🤓" },
+  ninjacentrale:{ name: "NinjaCentrale", type: "Usenet Indexer · NZB", icon: "🥷" },
+  drunkenslug:  { name: "DrunkenSlug",   type: "Usenet Indexer · NZB", icon: "🐌" },
+};
+
+const PLAN_SERVICES = { easynews: true };
+
 function latencyClass(ms) {
-  if (ms === null || ms === undefined) return "";
+  if (ms == null) return "";
   if (ms < 200) return "latency-good";
   if (ms < 600) return "latency-ok";
   return "latency-bad";
 }
 
-function renderCard(key, data) {
+// ── Storage ─────────────────────────────────────────────────────────────────
+function getExpiry(key)      { return localStorage.getItem(`expiry_${key}`) || ""; }
+function getPlan(key)        { return localStorage.getItem(`plan_${key}`) || "date"; }
+function setExpiry(key, val) { localStorage.setItem(`expiry_${key}`, val); }
+function setPlan(key, val)   { localStorage.setItem(`plan_${key}`, val); }
+
+function expiryStatus(key) {
+  if (getPlan(key) === "lifetime") return "lifetime";
+  const d = getExpiry(key);
+  if (!d) return "unset";
+  return new Date(d) >= new Date() ? "active" : "inactive";
+}
+
+function daysLeft(key) {
+  if (getPlan(key) === "lifetime") return null;
+  const d = getExpiry(key);
+  if (!d) return null;
+  return Math.ceil((new Date(d) - new Date()) / (1000 * 60 * 60 * 24));
+}
+
+function expiryLabel(key) {
+  const plan = getPlan(key);
+  if (plan === "lifetime") return "LIFETIME";
+  const d = getExpiry(key);
+  if (!d) return "STATUS";
+  const days = daysLeft(key);
+  if (days < 0)  return "INACTIVE";
+  if (days === 0) return "EXPIRES TODAY";
+  return `${days}d LEFT`;
+}
+
+// ── Popup toggle ─────────────────────────────────────────────────────────────
+function toggleExpiry(key, event) {
+  event.stopPropagation();
+  const popup = document.getElementById(`expiry-popup-${key}`);
+  document.querySelectorAll(".expiry-popup").forEach(p => { if (p !== popup) p.classList.remove("open"); });
+  popup.classList.toggle("open");
+  // Sync plan buttons and date row state
+  const plan = getPlan(key);
+  syncPlanUI(key, plan);
+}
+
+function syncPlanUI(key, plan) {
+  document.getElementById(`plan-btn-lifetime-${key}`).classList.toggle("active-plan", plan === "lifetime");
+  document.getElementById(`plan-btn-date-${key}`).classList.toggle("active-plan", plan === "date");
+  const dateRow = document.getElementById(`date-row-${key}`);
+  dateRow.classList.toggle("visible", plan === "date");
+}
+
+function selectPlan(key, plan) {
+  setPlan(key, plan);
+  syncPlanUI(key, plan);
+}
+
+function saveExpiry(key) {
+  const input = document.getElementById(`expiry-input-${key}`);
+  setExpiry(key, input.value);
+  updateExpiryBadge(key);
+  document.getElementById(`expiry-popup-${key}`).classList.remove("open");
+}
+
+function updateExpiryBadge(key) {
+  const badge = document.getElementById(`expiry-badge-${key}`);
+  if (!badge) return;
+  const st = expiryStatus(key);
+  badge.className = `expiry-badge ${st}`;
+  badge.querySelector(".expiry-badge-label").textContent = expiryLabel(key);
+}
+
+document.addEventListener("click", () => {
+  document.querySelectorAll(".expiry-popup").forEach(p => p.classList.remove("open"));
+});
+
+// ── Build expiry widget ───────────────────────────────────────────────────────
+function buildExpiryWidget(key) {
+  const st = expiryStatus(key);
+  return `
+    <div style="position:relative;display:inline-block;">
+      <div class="expiry-badge ${st}" id="expiry-badge-${key}" onclick="toggleExpiry('${key}', event)">
+        <span class="expiry-badge-label">${expiryLabel(key)}</span>
+      </div>
+      <div class="expiry-popup" id="expiry-popup-${key}" onclick="event.stopPropagation()">
+        <label>Plan type</label>
+        <div class="plan-toggle">
+          <button class="plan-btn" id="plan-btn-date-${key}"     onclick="selectPlan('${key}','date')">Date</button>
+          <button class="plan-btn" id="plan-btn-lifetime-${key}" onclick="selectPlan('${key}','lifetime')">Lifetime</button>
+        </div>
+        <div class="date-row" id="date-row-${key}">
+          <label>Expiry date</label>
+          <input type="date" id="expiry-input-${key}" value="${getExpiry(key)}">
+        </div>
+        <button class="expiry-save-btn" onclick="saveExpiry('${key}')">Save</button>
+      </div>
+    </div>`;
+}
+
+// ── Render service card ───────────────────────────────────────────────────────
+function renderServiceCard(key, data) {
   const svc = SERVICES[key];
   const status = data ? data.status : "loading";
   const isUnconfigured = data && data.status === "unknown" && data.error && data.error.includes("configured");
 
   const statusColors = {
-    online: "var(--online)",
-    offline: "var(--offline)",
-    degraded: "var(--degraded)",
-    unknown: "var(--unknown)",
-    loading: "var(--border)",
+    online: "var(--online)", offline: "var(--offline)",
+    degraded: "var(--degraded)", unknown: "var(--unknown)", loading: "var(--border)",
   };
 
   const metrics = [];
-
   if (data && !isUnconfigured) {
-    if (data.latency_ms != null) {
-      metrics.push({
-        label: "Latency",
-        value: `${data.latency_ms}ms`,
-        cls: latencyClass(data.latency_ms),
-      });
-    }
-    if (data.connections) {
-      metrics.push({ label: "Connections", value: data.connections });
-    }
-    if (data.allowance_left) {
-      metrics.push({ label: "Allowance Left", value: data.allowance_left });
-    }
-    if (data.username) {
-      metrics.push({ label: "Account", value: data.username });
-    }
-    if (data.premium_until) {
-      metrics.push({ label: "Premium Until", value: data.premium_until });
-    }
-    if (data.host) {
-      metrics.push({ label: "Host", value: data.host });
-    }
+    if (data.latency_ms != null) metrics.push({ label: "Latency", value: `${data.latency_ms}ms`, cls: latencyClass(data.latency_ms) });
+    if (data.connections)        metrics.push({ label: "Connections", value: data.connections });
+    if (data.allowance_left)     metrics.push({ label: "Allowance Left", value: data.allowance_left });
+    if (PLAN_SERVICES[key])      metrics.push({ label: "Plan", value: "Unlimited" });
+    else if (data.username)      metrics.push({ label: "Account", value: data.username });
+    if (data.premium_until)      metrics.push({ label: "Premium Until", value: data.premium_until });
+    if (data.host)               metrics.push({ label: "Host", value: data.host });
   }
 
   const metricsHtml = metrics.length
@@ -403,16 +483,11 @@ function renderCard(key, data) {
         <div class="metric">
           <div class="metric-label">${m.label}</div>
           <div class="metric-value ${m.cls || ''}">${m.value}</div>
-        </div>`).join("")}</div>`
-    : "";
+        </div>`).join("")}</div>` : "";
 
-  const errorHtml = data && data.error && !isUnconfigured
-    ? `<div class="error-msg">⚠ ${data.error}</div>`
-    : "";
-
+  const errorHtml = data && data.error && !isUnconfigured ? `<div class="error-msg">⚠ ${data.error}</div>` : "";
   const unconfiguredHtml = isUnconfigured
-    ? `<div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--muted);margin-top:0.8rem;">No credentials configured — set env vars to enable</div>`
-    : "";
+    ? `<div style="font-family:'Space Mono',monospace;font-size:0.65rem;color:var(--muted);margin-top:0.8rem;">No credentials configured — set env vars to enable</div>` : "";
 
   const cardClass = isUnconfigured ? "card service-card-disabled" : "card";
 
@@ -426,20 +501,41 @@ function renderCard(key, data) {
             <div class="service-type">${svc.type}</div>
           </div>
         </div>
-        <div class="status-badge ${isUnconfigured ? 'unknown' : status}">
-          <div class="status-dot ${isUnconfigured ? '' : status}"></div>
-          ${isUnconfigured ? 'n/a' : status}
+        <div class="card-header-right">
+          <div class="status-badge ${isUnconfigured ? 'unknown' : status}">
+            <div class="status-dot ${isUnconfigured ? '' : status}"></div>
+            ${isUnconfigured ? 'n/a' : status}
+          </div>
+          ${buildExpiryWidget(key)}
         </div>
       </div>
-      ${metricsHtml}
-      ${errorHtml}
-      ${unconfiguredHtml}
+      ${metricsHtml}${errorHtml}${unconfiguredHtml}
     </div>`;
 }
 
-function renderSkeleton() {
-  return Object.keys(SERVICES).map(key => {
-    const svc = SERVICES[key];
+// ── Render indexer card (static — no API check) ───────────────────────────────
+function renderIndexerCard(key) {
+  const svc = INDEXERS[key];
+  return `
+    <div class="card" id="card-${key}" style="--status-color: var(--accent)">
+      <div class="card-header">
+        <div class="service-info">
+          <div class="service-icon">${svc.icon}</div>
+          <div>
+            <div class="service-name">${svc.name}</div>
+            <div class="service-type">${svc.type}</div>
+          </div>
+        </div>
+        <div class="card-header-right">
+          ${buildExpiryWidget(key)}
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderSkeleton(services) {
+  return Object.keys(services).map(key => {
+    const svc = services[key];
     return `
       <div class="card" style="--status-color: var(--border)">
         <div class="card-header">
@@ -450,10 +546,7 @@ function renderSkeleton() {
               <div class="service-type">${svc.type}</div>
             </div>
           </div>
-          <div class="status-badge loading">
-            <div class="status-dot"></div>
-            checking
-          </div>
+          <div class="status-badge loading"><div class="status-dot"></div>checking</div>
         </div>
       </div>`;
   }).join("");
@@ -462,32 +555,28 @@ function renderSkeleton() {
 async function fetchStatus() {
   const btn = document.getElementById("refresh-btn");
   btn.classList.add("spinning");
-
-  document.getElementById("cards").innerHTML = renderSkeleton();
+  document.getElementById("cards-services").innerHTML = renderSkeleton(SERVICES);
+  document.getElementById("cards-indexers").innerHTML = Object.keys(INDEXERS).map(k => renderIndexerCard(k)).join("");
 
   try {
     const res = await fetch("/api/status");
     const data = await res.json();
-
-    const html = Object.keys(SERVICES).map(key => renderCard(key, data[key])).join("");
-    document.getElementById("cards").innerHTML = html;
+    document.getElementById("cards-services").innerHTML = Object.keys(SERVICES).map(k => renderServiceCard(k, data[k])).join("");
+    // Re-render indexers (they're static but need expiry widgets re-init)
+    document.getElementById("cards-indexers").innerHTML = Object.keys(INDEXERS).map(k => renderIndexerCard(k)).join("");
 
     const ts = data.checked_at ? new Date(data.checked_at * 1000) : new Date();
-    document.getElementById("last-checked").textContent =
-      `Last checked: ${ts.toLocaleTimeString()}`;
-
+    document.getElementById("last-checked").textContent = `Last checked: ${ts.toLocaleTimeString()}`;
     resetCountdown();
   } catch (e) {
-    document.getElementById("cards").innerHTML =
+    document.getElementById("cards-services").innerHTML =
       `<div style="color:var(--offline);font-family:'Space Mono',monospace;font-size:0.8rem;padding:1rem">Failed to fetch status: ${e.message}</div>`;
   } finally {
     btn.classList.remove("spinning");
   }
 }
 
-let countdownVal = 60;
-let countdownTimer = null;
-
+let countdownVal = 60, countdownTimer = null;
 function resetCountdown() {
   countdownVal = 60;
   if (countdownTimer) clearInterval(countdownTimer);
@@ -495,9 +584,7 @@ function resetCountdown() {
     countdownVal--;
     const el = document.getElementById("countdown");
     if (el) el.textContent = countdownVal;
-    if (countdownVal <= 0) {
-      fetchStatus();
-    }
+    if (countdownVal <= 0) fetchStatus();
   }, 1000);
 }
 
