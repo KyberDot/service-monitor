@@ -97,7 +97,7 @@ def check_easynews():
 
 def check_newshosting():
     result = check_tcp("news.newshosting.com", 563)
-    result["host"] = "news.newshosting.com:563"
+    result["host"] = "newshosting.com"
     if NEWSHOSTING_USER:
         result["username"] = NEWSHOSTING_USER
     return result
@@ -105,7 +105,7 @@ def check_newshosting():
 
 def check_tweaknews():
     result = check_tcp("newshosting.tweaknews.eu", 563)
-    result["host"] = "newshosting.tweaknews.eu:563"
+    result["host"] = "tweaknews.eu"
     if TWEAKNEWS_USER:
         result["username"] = TWEAKNEWS_USER
     return result
