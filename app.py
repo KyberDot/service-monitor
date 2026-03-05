@@ -104,7 +104,7 @@ def check_newshosting():
 
 
 def check_tweaknews():
-    result = check_tcp("newshosting.tweaknews.eu", 563)
+    result = check_tcp("news.tweaknews.eu", 563)
     result["host"] = "tweaknews.eu"
     if TWEAKNEWS_USER:
         result["username"] = TWEAKNEWS_USER
@@ -147,6 +147,24 @@ def get_all_statuses():
     return data
 
 
+import json as _json
+from flask import request as _request
+
+EXPIRY_FILE = os.path.join(os.path.dirname(__file__), "expiry_data.json")
+_expiry_lock = threading.Lock()
+
+def _load_expiry():
+    try:
+        with open(EXPIRY_FILE, "r") as f:
+            return _json.load(f)
+    except Exception:
+        return {}
+
+def _save_expiry(data):
+    with open(EXPIRY_FILE, "w") as f:
+        _json.dump(data, f)
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -155,6 +173,28 @@ def index():
 @app.route("/api/status")
 def api_status():
     return jsonify(get_all_statuses())
+
+
+@app.route("/api/expiry", methods=["GET"])
+def get_expiry():
+    with _expiry_lock:
+        return jsonify(_load_expiry())
+
+
+@app.route("/api/expiry", methods=["POST"])
+def save_expiry():
+    with _expiry_lock:
+        data = _load_expiry()
+        payload = _request.get_json(force=True) or {}
+        key = payload.get("key")
+        if not key:
+            return jsonify({"error": "missing key"}), 400
+        if "expiry" in payload:
+            data[f"expiry_{key}"] = payload["expiry"]
+        if "plan" in payload:
+            data[f"plan_{key}"] = payload["plan"]
+        _save_expiry(data)
+        return jsonify({"ok": True})
 
 
 if __name__ == "__main__":
