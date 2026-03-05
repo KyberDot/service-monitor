@@ -164,6 +164,17 @@
   .service-type { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); margin-top: 0.1rem; }
 
   .card-header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; }
+  .card-header-top { display: flex; align-items: center; gap: 0.4rem; }
+  .extra-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.3rem 0.5rem;
+    border-radius: 2px;
+    border: 1px solid rgba(88,166,255,0.4);
+    color: var(--accent);
+    background: rgba(88,166,255,0.06);
+  }
 
   .status-badge {
     display: flex; align-items: center; gap: 0.4rem;
@@ -335,7 +346,7 @@
 const SERVICES = {
   real_debrid: { name: "Real-Debrid", type: "Debrid Service · HTTP API", icon: "⚡" },
   easynews:    { name: "Easynews",    type: "Usenet · HTTP API",          icon: "📰" },
-  newshosting: { name: "Newshosting", type: "Usenet · NNTP :563",         icon: "🗞"  },
+  newshosting: { name: "Newshosting", type: "Usenet · NNTP :563",         icon: "🗞", extras: ["+VPN"] },
   tweaknews:   { name: "Tweaknews",   type: "Usenet · NNTP :563",         icon: "📡" },
 };
 
@@ -512,9 +523,12 @@ function renderServiceCard(key, data) {
           </div>
         </div>
         <div class="card-header-right">
-          <div class="status-badge ${isUnconfigured ? 'unknown' : status}">
-            <div class="status-dot ${isUnconfigured ? '' : status}"></div>
-            ${isUnconfigured ? 'n/a' : status}
+          <div class="card-header-top">
+            ${(svc.extras || []).map(e => `<div class="extra-badge">${e}</div>`).join('')}
+            <div class="status-badge ${isUnconfigured ? 'unknown' : status}">
+              <div class="status-dot ${isUnconfigured ? '' : status}"></div>
+              ${isUnconfigured ? 'n/a' : status}
+            </div>
           </div>
           ${buildExpiryWidget(key)}
         </div>
