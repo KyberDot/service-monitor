@@ -123,6 +123,7 @@
     overflow: visible;
     transition: border-color 0.3s, transform 0.2s;
     animation: fadeIn 0.4s ease forwards;
+    isolation: auto;
     opacity: 0;
   }
 
@@ -133,7 +134,7 @@
 
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+    to { opacity: 1; transform: none; }
   }
 
   .card::before {
@@ -145,7 +146,7 @@
     transition: background 0.3s;
   }
 
-  .card:hover { border-color: rgba(88,166,255,0.2); transform: translateY(-2px); }
+  .card:hover { border-color: rgba(88,166,255,0.2); }
 
   .card-header {
     display: flex;
@@ -211,13 +212,13 @@
   /* Expiry popup */
   .expiry-popup {
     display: none;
-    position: fixed;
-    right: auto;
-    top: auto;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
     background: #111820;
     border: 1px solid var(--border);
     padding: 0.75rem;
-    z-index: 200;
+    z-index: 9999;
     min-width: 210px;
     font-family: 'Space Mono', monospace;
     font-size: 0.65rem;
@@ -412,10 +413,6 @@ function toggleExpiry(key, event) {
   event.stopPropagation();
   const popup = document.getElementById(`expiry-popup-${key}`);
   document.querySelectorAll(".expiry-popup").forEach(p => { if (p !== popup) p.classList.remove("open"); });
-  const badge = document.getElementById(`expiry-badge-${key}`);
-  const rect = badge.getBoundingClientRect();
-  popup.style.top = (rect.bottom + 6) + 'px';
-  popup.style.right = (window.innerWidth - rect.right) + 'px';
   popup.classList.toggle("open");
   const plan = getPlan(key);
   syncPlanUI(key, plan);
