@@ -211,9 +211,9 @@
   /* Expiry popup */
   .expiry-popup {
     display: none;
-    position: absolute;
-    right: 0;
-    top: calc(100% + 6px);
+    position: fixed;
+    right: auto;
+    top: auto;
     background: #111820;
     border: 1px solid var(--border);
     padding: 0.75rem;
@@ -396,8 +396,11 @@ function toggleExpiry(key, event) {
   event.stopPropagation();
   const popup = document.getElementById(`expiry-popup-${key}`);
   document.querySelectorAll(".expiry-popup").forEach(p => { if (p !== popup) p.classList.remove("open"); });
+  const badge = document.getElementById(`expiry-badge-${key}`);
+  const rect = badge.getBoundingClientRect();
+  popup.style.top = (rect.bottom + 6) + 'px';
+  popup.style.right = (window.innerWidth - rect.right) + 'px';
   popup.classList.toggle("open");
-  // Sync plan buttons and date row state
   const plan = getPlan(key);
   syncPlanUI(key, plan);
 }
@@ -472,8 +475,8 @@ function renderServiceCard(key, data) {
     if (data.latency_ms != null) metrics.push({ label: "Latency", value: `${data.latency_ms}ms`, cls: latencyClass(data.latency_ms) });
     if (data.connections)        metrics.push({ label: "Connections", value: data.connections });
     if (data.allowance_left)     metrics.push({ label: "Allowance Left", value: data.allowance_left });
+    if (data.username)           metrics.push({ label: "Account", value: data.username });
     if (PLAN_SERVICES[key])      metrics.push({ label: "Plan", value: "Unlimited" });
-    else if (data.username)      metrics.push({ label: "Account", value: data.username });
     if (data.premium_until)      metrics.push({ label: "Premium Until", value: data.premium_until });
     if (data.host)               metrics.push({ label: "Host", value: data.host });
   }
